@@ -28,7 +28,7 @@
 
 @property (nonatomic, weak) id<AutoReadViewDelegate> delegate;
 
-- (void)reloadData;
+- (void)reloadData:(NSString *)content;
 
 - (void)beginAutoRead;
 

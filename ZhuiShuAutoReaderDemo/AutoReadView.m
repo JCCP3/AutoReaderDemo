@@ -54,35 +54,66 @@
 - (void)initial
 {
     currentPage = 0; //初始化显示第一页
-    timerSpeed = 0.05;
+    timerSpeed = 0.01;
+
 }
 
+- (void)reloadData:(NSString *)content
+{
+    viewsInPageArray = [NSMutableArray array];
+    viewsInPageArray = [[content componentsSeparatedByString:@","] mutableCopy];
+    pageCount = [viewsInPageArray count];
+    [self createView];
+}
 
-- (void)reloadData
+- (void)createView
 {
     
-    viewsInPageArray = [NSMutableArray array];
-    
-    if (!self.delegate || ![self.delegate respondsToSelector:@selector(numberOfPageInAutoReadView:)] || ![self.delegate respondsToSelector:@selector(autoReadView:viewForPageAtIndex:)]) {
-        return;
+    for (int i=0; i<2; i++) {
+        NSString *content = [viewsInPageArray objectAtIndex:i];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+        view.clipsToBounds = YES;
+        UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.bounds), CGRectGetHeight(view.bounds))];
+        textView.font = [UIFont systemFontOfSize:18];
+        textView.scrollEnabled = NO;
+        textView.text = content;
+        textView.tag = 100;
+        textView.editable = NO;
+        [view addSubview:textView];
+        [self addSubview:view];
+        if (i == 0) {
+            textView.backgroundColor = [UIColor clearColor];
+            currentView = view;
+        } else {
+            textView.backgroundColor = [UIColor whiteColor];
+            view.frame = CGRectMake(0, 0, 0, 0);
+            nextShowView = view;
+        }
     }
-    
-    pageCount = [self.delegate numberOfPageInAutoReadView:self];
-    
-    for (int i = 0; i < pageCount; i++) {
-        UIView *pageView = [self.delegate autoReadView:self viewForPageAtIndex:i];
-        [self addSubview:pageView];
-        [viewsInPageArray addObject:pageView];
-    }
-    
 }
-
 
 
 - (void)beginAutoRead
 {
-    nextShowView = [viewsInPageArray objectAtIndex:currentPage];
-   
+    if (currentPage != 0) {
+//        if (currentPage %2 == 0) {
+//           
+//            ((UITextView *)[currentView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
+//            [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
+//            [self addSubview:currentView];
+//        } else {
+//           
+//            ((UITextView *)[nextShowView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
+//            [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
+//            [self addSubview:nextShowView];
+//        }
+        [self addSubview:currentView];
+        
+    } else {
+        currentPage ++;
+        ((UITextView *)[nextShowView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
+    }
+    
     if (!timer) {
         timer = [NSTimer scheduledTimerWithTimeInterval:timerSpeed target:self selector:@selector(changeCurrentViewFrame:) userInfo:nil repeats:YES];
         [timer fire];
@@ -120,10 +151,21 @@
         } else {
             [self invalidateTimer];
             currentPage ++;
+            nextShowView = currentView;
             [self beginAutoRead];
         }
     } else {
-        [nextShowView setFrame:CGRectMake(0, CGRectGetMinY(nextShowView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(nextShowView.bounds)+1)];
+        
+        if (currentPage != 0) {
+            if (currentPage %2 == 0) {
+                [currentView setFrame:CGRectMake(0, CGRectGetMinY(currentView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(currentView.bounds)+1)];
+            } else {
+                [nextShowView setFrame:CGRectMake(0, CGRectGetMinY(nextShowView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(nextShowView.bounds)+1)];
+            }
+            
+        } else {
+            [nextShowView setFrame:CGRectMake(0, CGRectGetMinY(nextShowView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(nextShowView.bounds)+1)];
+        }
     }
 }
 

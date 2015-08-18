@@ -31,11 +31,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     timerSpeed = 0.05;
-    bookContentArray = [@[@"故事的小黄花 \n\n从出生的那年就飘着\n童年的荡秋千 随记忆一直晃到现在\n\n 吹着前奏望着天空的我想起花瓣试着掉落 为你翘课的那一天 \n\n花落的那一天教室的那一间 我怎么看不见消失的下雨天 \n\n我好想再淋一遍每想到失去的勇气我还留着好想再问一遍 你会等待还是离开\n\n刮风这天 我试过握着你手但偏偏 雨渐渐 大到我看你不见 还有多久 \n\n我才能在你身边 等到放晴的那天 也许我会比较好一点 从前从前 有个人爱你很久 但偏偏 风渐渐 把距离吹得好远 好不容易 又能再多爱一天 \n\n但故事的最后你好像还是说了拜拜 \n\n 为你翘课的那一天 花落的那一天 教室的那一间 我怎么看不见 \n消失的下雨天 我好想再淋一遍", @"一盏离愁孤单伫立在窗口 我在门后假装你人还没走 旧地如重游月圆更寂寞 夜半清醒的烛火不忍苛责我 一壶漂泊浪迹天涯难入喉 你走之后酒暖回忆\n\n刮风这天 \n\n 我试过握着你手但偏偏 雨渐渐 大到我看你不见 还有多久 我才能在你身边 \n等到放晴的那天 也许我会比较好一点 从前从前 \n\n有个人爱你很久\n\n 但偏偏 风渐渐 把距离吹得好远 好不容易 又能再多爱一天 但故事的最后你好像还是说了拜拜 \n\n 为你翘课的那一天 花落的那一天 教室的那一间 \n\n我怎么看不见 消失的下雨天 我好想再淋一遍", @"青花瓷 素胚勾勒出青花笔锋浓转淡 瓶身描绘的牡丹一如你初妆 冉冉檀香透过窗心事我了然 \n\n宣纸上走笔至此搁...", @"故事的小黄花 从出生的那年就飘着\n童年的荡秋千 随记忆一直晃到现在\n\n 吹着前奏望着天空的我想起花瓣试着掉落 \n\n为你翘课的那一天 花落的那一天教室的那一间 \n我怎么看不见消失的下雨天 我好想再淋一遍每想到失去的勇气我还留着好想再问一遍 你会等待还是离开\n刮风这天 我试过握着你手但偏偏 雨渐渐 大到我看你不见 还有多久 我才能在你身边 等到放晴的那天 也许我会比较好一点 \n\n从前从前 有个人爱你很久 但偏偏 风渐渐 \n把距离吹得好远 好不容易 又能再多爱一天 \n\n但故事的最后你好像还是说了拜拜\n\n 为你翘课的那一天 花落的那一天 教室的那一间 我怎么看不见 消失的下雨天 我好想再淋一遍"] mutableCopy];
+    bookContentArray = [@[] mutableCopy];
     viewArray = [NSMutableArray array];
     
     autoReadView = [[AutoReadView alloc] init];
     autoReadView.delegate = self;
+    [autoReadView reloadData:@"1\n\n\n\n 2\n\n\n 3,4\n\n\n\n 5\n\n\n 6,7\n\n\n\n 8\n\n\n 9,10\n\n\n\n 11\n\n\n 12"];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent:)];
     [self.view addGestureRecognizer:tapGesture];
@@ -105,7 +106,7 @@
         [viewArray addObject:view];
     }
     
-    [autoReadView reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -168,7 +169,6 @@
         }
         [autoReadView updateTimerSpeed:timerSpeed];
     }
-    
 }
 
 - (void)onClickMoreFast
