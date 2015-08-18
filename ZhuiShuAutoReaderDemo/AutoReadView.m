@@ -72,6 +72,7 @@
     for (int i=0; i<2; i++) {
         NSString *content = [viewsInPageArray objectAtIndex:i];
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+        view.backgroundColor = [UIColor whiteColor];
         view.clipsToBounds = YES;
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.bounds), CGRectGetHeight(view.bounds))];
         textView.font = [UIFont systemFontOfSize:18];
@@ -84,10 +85,12 @@
         if (i == 0) {
             textView.backgroundColor = [UIColor clearColor];
             currentView = view;
+//            currentView.backgroundColor = [UIColor yellowColor];
         } else {
-            textView.backgroundColor = [UIColor whiteColor];
+            textView.backgroundColor = [UIColor clearColor];
             view.frame = CGRectMake(0, 0, 0, 0);
             nextShowView = view;
+//            nextShowView.backgroundColor = [UIColor redColor];
         }
     }
 }
@@ -107,8 +110,7 @@
             [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
             [self addSubview:nextShowView];
         }
-        [self addSubview:currentView];
-        
+       
     } else {
         currentPage ++;
         ((UITextView *)[nextShowView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
