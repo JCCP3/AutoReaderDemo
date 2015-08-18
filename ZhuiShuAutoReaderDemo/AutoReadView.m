@@ -96,17 +96,17 @@
 - (void)beginAutoRead
 {
     if (currentPage != 0) {
-//        if (currentPage %2 == 0) {
-//           
-//            ((UITextView *)[currentView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
-//            [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
-//            [self addSubview:currentView];
-//        } else {
-//           
-//            ((UITextView *)[nextShowView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
-//            [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
-//            [self addSubview:nextShowView];
-//        }
+        if (currentPage %2 == 0) {
+           
+            ((UITextView *)[currentView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
+            [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
+            [self addSubview:currentView];
+        } else {
+           
+            ((UITextView *)[nextShowView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
+            [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
+            [self addSubview:nextShowView];
+        }
         [self addSubview:currentView];
         
     } else {
@@ -144,14 +144,25 @@
 #pragma mark - NSTimer Action
 - (void)changeCurrentViewFrame:(NSTimer *)timer
 {
-    if (CGRectGetHeight(nextShowView.bounds) >= [UIScreen mainScreen].bounds.size.height) {
+    CGFloat currentHeight = 0;
+    if (currentPage != 0) {
+        if (currentPage %2 == 0) {
+            currentHeight = CGRectGetHeight(currentView.bounds);
+        } else {
+            currentHeight = CGRectGetHeight(nextShowView.bounds);
+        }
+    } else {
+        currentHeight = CGRectGetHeight(nextShowView.bounds);
+    }
+    
+    
+    if (currentHeight >= [UIScreen mainScreen].bounds.size.height) {
         if (currentPage >= [viewsInPageArray count]-1) {
             //结束
             [self invalidateTimer];
         } else {
             [self invalidateTimer];
             currentPage ++;
-            nextShowView = currentView;
             [self beginAutoRead];
         }
     } else {
