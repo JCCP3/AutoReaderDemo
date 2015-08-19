@@ -16,6 +16,8 @@
     BOOL autoReadEnable;
     
     CGFloat timerSpeed;
+    
+    NSInteger currentIndex;
 }
 
 @end
@@ -34,9 +36,9 @@
     bookContentArray = [@[] mutableCopy];
     viewArray = [NSMutableArray array];
     
-    autoReadView = [[AutoReadView alloc] init];
+    currentIndex = 0;
+    autoReadView = [[AutoReadView alloc] initWithFrame:self.view.frame autoReadContent:@"1\n\n\n\n 2\n\n\n 3,4\n\n\n\n 5\n\n\n 6,7\n\n\n\n 8\n\n\n 9,10\n\n\n\n 11\n\n\n 12" index:currentIndex];
     autoReadView.delegate = self;
-    [autoReadView reloadData:@"1\n\n\n\n 2\n\n\n 3,4\n\n\n\n 5\n\n\n 6,7\n\n\n\n 8\n\n\n 9,10\n\n\n\n 11\n\n\n 12"];
     [self.view addSubview:autoReadView];
     
     UIView *footerView = [[UIButton alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-45, [UIScreen mainScreen].bounds.size.width, 45)];
@@ -65,6 +67,9 @@
     [fastBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [fastBtn addTarget:self action:@selector(onClickMoreFast) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:fastBtn];
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(onClickAddContent) userInfo:nil repeats:YES];
+    [timer fire];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -76,6 +81,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)onClickAddContent
+{
+    currentIndex ++;
+    [autoReadView reloadAutoReadContent:@"第二章1\n\n\n\n 第二章2\n\n\n 第二章3,第二章4\n\n\n\n 第二章5\n\n\n 第二章6,第二章7\n\n\n\n 第二章8\n\n\n 第二章9,第二章10\n\n\n\n 第二章11\n\n\n 12" index:currentIndex];
 }
 
 #pragma mark - BtnAction

@@ -10,17 +10,17 @@
 
 @interface AutoReadView ()<UIGestureRecognizerDelegate> {
     
-    NSInteger pageCount;
-    
     UIView *currentView;
     UIView *nextShowView;
     
     BOOL isStop;
-
-    NSMutableArray *viewsInPageArray;
+    BOOL isCurrentViewFirst;
+    
+    NSMutableArray *contentIndexArray;
     
     NSTimer *timer;
     
+    NSInteger currentIndex;
     NSInteger currentPage;
     
     CGFloat timerSpeed;
@@ -40,19 +40,20 @@
 }
 */
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)rect autoReadContent:(NSString *)content index:(NSInteger)index
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:rect];
     if (self) {
-        [self initial];
+        [self initWithContent:content index:index]; //初始化
     }
     return self;
 }
 
-
-- (void)initial
+- (void)initWithContent:(NSString *)content index:(NSInteger)index
 {
-    currentPage = 0; //初始化显示第一页
+    currentIndex = index;
+    currentPage = 0;
+    
     timerSpeed = 0.01;
     
     shadowView = [[UIView alloc] initWithFrame:CGRectMake(0, 10, [UIScreen mainScreen].bounds.size.width, 1)];
@@ -68,20 +69,41 @@
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panWithTouchEvent:)];
     [self addGestureRecognizer:panGesture];
+    
+    contentIndexArray = [NSMutableArray array];
+    
+    [self addDataIntoArray:content index:index];
+    
+    [self createView];
+
 }
 
-- (void)reloadData:(NSString *)content
+- (void)reloadAutoReadContent:(NSString *)content index:(NSInteger)index
 {
-    viewsInPageArray = [NSMutableArray array];
-    viewsInPageArray = [[content componentsSeparatedByString:@","] mutableCopy];
-    pageCount = [viewsInPageArray count];
-    [self createView];
+    [self addDataIntoArray:content index:index];
+}
+
+- (void)addDataIntoArray:(NSString *)content index:(NSInteger)index
+{
+    NSArray *contentArray = [content componentsSeparatedByString:@","];
+    NSDictionary *contentIndexDic = [[NSDictionary alloc] initWithObjectsAndKeys:contentArray,[NSString stringWithFormat:@"%ld",(long)index], nil];
+    [contentIndexArray addObject:contentIndexDic];
+}
+
+- (NSString *)getCurrentContentAtIndexPage
+{
+    NSDictionary *dic = [contentIndexArray objectAtIndex:currentIndex];
+    NSArray *array = [dic objectForKey:[NSString stringWithFormat:@"%ld",(long)currentIndex]];
+    NSString *content = [array objectAtIndex:currentPage];
+    return content;
 }
 
 - (void)createView
 {
+    NSArray *firstIndexContentArray = [[contentIndexArray objectAtIndex:0] objectForKey:[[[contentIndexArray objectAtIndex:0] allKeys] objectAtIndex:0]];
+    
     for (int i=0; i<2; i++) {
-        NSString *content = [viewsInPageArray objectAtIndex:i];
+        NSString *content = [firstIndexContentArray objectAtIndex:i];
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
         view.backgroundColor = [UIColor whiteColor];
         view.clipsToBounds = YES;
@@ -106,24 +128,52 @@
     }
 }
 
+- (void)changeCurrentIndex
+{
+    currentIndex ++;
+    currentPage = 0;
+    [self beginAutoRead];
+}
+
 - (void)beginAutoRead
 {
-    if (currentPage != 0) {
-        if (currentPage %2 == 0) {
-           
-            ((UITextView *)[currentView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
-            [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
-            [self addSubview:currentView];
+    if (currentIndex == 0) {
+        if (currentPage == 0) {
+            currentPage ++;
+            ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
         } else {
-           
-            ((UITextView *)[nextShowView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
-            [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
-            [self addSubview:nextShowView];
+            if (currentPage % 2 == 0) {
+                ((UITextView *)[currentView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+                [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
+                [self addSubview:currentView];
+            } else {
+                ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+                [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
+                [self addSubview:nextShowView];
+            }
         }
-       
     } else {
-        currentPage ++;
-        ((UITextView *)[nextShowView viewWithTag:100]).text = [viewsInPageArray objectAtIndex:currentPage];
+        if (isCurrentViewFirst) {
+            if (currentPage % 2 == 0) {
+                ((UITextView *)[currentView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+                [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
+                [self addSubview:currentView];
+            } else {
+                ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+                [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
+                [self addSubview:nextShowView];
+            }
+        } else {
+            if (currentPage % 2 == 0) {
+                ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+                [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
+                [self addSubview:nextShowView];
+            } else {
+                ((UITextView *)[currentView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+                [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
+                [self addSubview:currentView];
+            }
+        }
     }
     
     if (!timer) {
@@ -181,24 +231,59 @@
     [recognizer setTranslation:CGPointZero inView:self];
 }
 
+#pragma mark - changeToImageView
+- (UIImageView *)getImageByContent:(NSString *)content
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), CGRectGetHeight([UIScreen mainScreen].bounds))];
+    imageView.backgroundColor = [UIColor clearColor];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(imageView.bounds), 0)];
+    label.text = content;
+    label.numberOfLines = 0;
+    label.font = [UIFont systemFontOfSize:21];
+    [label sizeToFit];
+    [imageView addSubview:label];
+    return imageView;
+}
+
 #pragma mark - NSTimer Action
 - (void)changeCurrentViewFrame:(NSTimer *)timer
 {
     CGFloat currentHeight = 0;
-    if (currentPage != 0) {
-        if (currentPage %2 == 0) {
+    
+    if (currentIndex == 0) {
+        if (currentPage % 2 == 0) {
             currentHeight = CGRectGetHeight(currentView.bounds);
         } else {
             currentHeight = CGRectGetHeight(nextShowView.bounds);
         }
     } else {
-        currentHeight = CGRectGetHeight(nextShowView.bounds);
+        if (isCurrentViewFirst) {
+            if (currentPage % 2 == 0) {
+                currentHeight = CGRectGetHeight(currentView.bounds);
+            } else {
+                currentHeight = CGRectGetHeight(nextShowView.bounds);
+            }
+        } else {
+            if (currentPage % 2 == 0) {
+                currentHeight = CGRectGetHeight(nextShowView.bounds);
+            } else {
+                currentHeight = CGRectGetHeight(currentView.bounds);
+            }
+        }
     }
     
     if (currentHeight >= [UIScreen mainScreen].bounds.size.height) {
-        if (currentPage >= [viewsInPageArray count]-1) {
+        if (currentPage >= [[[contentIndexArray objectAtIndex:currentIndex] objectForKey:[NSString stringWithFormat:@"%ld",currentIndex]] count]-1) {
+            if (currentPage % 2 == 0) {
+                isCurrentViewFirst = NO;
+            } else {
+                isCurrentViewFirst = YES;
+            }
             //结束
             [self invalidateTimer];
+            if ([contentIndexArray count] - 1 > currentIndex) {
+                [self changeCurrentIndex]; //换章
+            }
         } else {
             [self invalidateTimer];
             currentPage ++;
@@ -206,8 +291,9 @@
         }
     } else {
         [self bringSubviewToFront:shadowView];
-        if (currentPage != 0) {
-            if (currentPage %2 == 0) {
+        
+        if (currentIndex == 0) {
+            if (currentPage % 2 == 0){
                 [currentView setFrame:CGRectMake(0, CGRectGetMinY(currentView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(currentView.bounds)+1)];
                 [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(currentView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
             } else {
@@ -215,8 +301,23 @@
                 [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
             }
         } else {
-            [nextShowView setFrame:CGRectMake(0, CGRectGetMinY(nextShowView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(nextShowView.bounds)+1)];
-            [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+            if (isCurrentViewFirst) {
+                if (currentPage % 2 == 0){
+                    [currentView setFrame:CGRectMake(0, CGRectGetMinY(currentView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(currentView.bounds)+1)];
+                    [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(currentView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+                } else {
+                    [nextShowView setFrame:CGRectMake(0, CGRectGetMinY(nextShowView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(nextShowView.bounds)+1)];
+                    [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+                }
+            } else {
+                if (currentPage % 2 == 0){
+                    [nextShowView setFrame:CGRectMake(0, CGRectGetMinY(nextShowView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(nextShowView.bounds)+1)];
+                    [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+                } else {
+                    [currentView setFrame:CGRectMake(0, CGRectGetMinY(currentView.frame), [[UIScreen mainScreen] bounds].size.width, CGRectGetHeight(currentView.bounds)+1)];
+                    [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(currentView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+                }
+            }
         }
     }
 }

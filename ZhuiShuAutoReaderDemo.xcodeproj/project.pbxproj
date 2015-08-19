@@ -13,8 +13,8 @@
 		FE438EF21B818877003ADF1C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE438EF01B818877003ADF1C /* LaunchScreen.xib */; };
 		FE438EFE1B818877003ADF1C /* ZhuiShuAutoReaderDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FE438EFD1B818877003ADF1C /* ZhuiShuAutoReaderDemoTests.m */; };
 		FE438F091B8188BA003ADF1C /* AutoReadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE438F081B8188BA003ADF1C /* AutoReadViewController.m */; };
-		FE5742211B82C7B700D5895E /* AutoReadView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5742201B82C7B700D5895E /* AutoReadView.m */; };
 		FE5742241B82C92500D5895E /* Book.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5742231B82C92500D5895E /* Book.m */; };
+		FE7DF0411B84730E00B6C9E7 /* AutoReadView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7DF0401B84730E00B6C9E7 /* AutoReadView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,10 +40,10 @@
 		FE438EFD1B818877003ADF1C /* ZhuiShuAutoReaderDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuiShuAutoReaderDemoTests.m; sourceTree = "<group>"; };
 		FE438F071B8188BA003ADF1C /* AutoReadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoReadViewController.h; sourceTree = "<group>"; };
 		FE438F081B8188BA003ADF1C /* AutoReadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoReadViewController.m; sourceTree = "<group>"; };
-		FE57421F1B82C7B700D5895E /* AutoReadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoReadView.h; sourceTree = "<group>"; };
-		FE5742201B82C7B700D5895E /* AutoReadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoReadView.m; sourceTree = "<group>"; };
 		FE5742221B82C92500D5895E /* Book.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Book.h; sourceTree = "<group>"; };
 		FE5742231B82C92500D5895E /* Book.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Book.m; sourceTree = "<group>"; };
+		FE7DF03F1B84730E00B6C9E7 /* AutoReadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoReadView.h; sourceTree = "<group>"; };
+		FE7DF0401B84730E00B6C9E7 /* AutoReadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoReadView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,16 +85,15 @@
 		FE438EE01B818877003ADF1C /* ZhuiShuAutoReaderDemo */ = {
 			isa = PBXGroup;
 			children = (
-				FE438F0A1B818B9B003ADF1C /* Base */,
 				FE438EE51B818877003ADF1C /* AppDelegate.h */,
 				FE438EE61B818877003ADF1C /* AppDelegate.m */,
 				FE438EEE1B818877003ADF1C /* Images.xcassets */,
 				FE438EF01B818877003ADF1C /* LaunchScreen.xib */,
+				FE7DF03F1B84730E00B6C9E7 /* AutoReadView.h */,
+				FE7DF0401B84730E00B6C9E7 /* AutoReadView.m */,
 				FE438F071B8188BA003ADF1C /* AutoReadViewController.h */,
 				FE438F081B8188BA003ADF1C /* AutoReadViewController.m */,
 				FE438EE11B818877003ADF1C /* Supporting Files */,
-				FE57421F1B82C7B700D5895E /* AutoReadView.h */,
-				FE5742201B82C7B700D5895E /* AutoReadView.m */,
 				FE5742221B82C92500D5895E /* Book.h */,
 				FE5742231B82C92500D5895E /* Book.m */,
 			);
@@ -125,13 +124,6 @@
 				FE438EFC1B818877003ADF1C /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		FE438F0A1B818B9B003ADF1C /* Base */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,8 +227,8 @@
 			files = (
 				FE5742241B82C92500D5895E /* Book.m in Sources */,
 				FE438EE71B818877003ADF1C /* AppDelegate.m in Sources */,
-				FE5742211B82C7B700D5895E /* AutoReadView.m in Sources */,
 				FE438EE41B818877003ADF1C /* main.m in Sources */,
+				FE7DF0411B84730E00B6C9E7 /* AutoReadView.m in Sources */,
 				FE438F091B8188BA003ADF1C /* AutoReadViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

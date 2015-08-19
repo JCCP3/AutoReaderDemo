@@ -10,4 +10,10 @@
 
 @interface Book : NSObject
 
+@property (nonatomic, strong) NSString *bookId;
+@property (nonatomic, strong) NSString *bookAuthor;
+@property (nonatomic, strong) NSString *bookName;
+@property (nonatomic, strong) NSString *bookContent;
+@property (nonatomic, strong) NSString *bookAtIndex; //章
+
 @end

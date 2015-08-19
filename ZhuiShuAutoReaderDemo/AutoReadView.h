@@ -9,18 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Book.h"
 
-@class AutoReadView;
 @protocol AutoReadViewDelegate <NSObject>
-
-@required
-- (NSInteger)numberOfPageInAutoReadView:(AutoReadView *)autoReadView;
-
-- (UIView *)autoReadView:(AutoReadView *)view viewForPageAtIndex:(NSInteger)index;
-
-@optional
-- (CGSize)sizePageForAutoReadView:(AutoReadView *)autoReadView;
-
-- (void)setTranslationZeroWithGesture:(UIPanGestureRecognizer *)recognizer;
 
 @end
 
@@ -28,15 +17,13 @@
 
 @property (nonatomic, weak) id<AutoReadViewDelegate> delegate;
 
-- (void)reloadData:(NSString *)content;
+- (instancetype)initWithFrame:(CGRect)rect autoReadContent:(NSString *)content index:(NSInteger)index;
+
+- (void)reloadAutoReadContent:(NSString *)content index:(NSInteger)index;
 
 - (void)beginAutoRead;
 
 - (void)endAutoRead;
-
-- (void)finishAutoRead;
-
-- (void)panWithCurrentView:(UIPanGestureRecognizer *)recognizer point:(CGPoint)point;
 
 - (void)updateTimerSpeed:(CGFloat)speed;
 
