@@ -114,6 +114,7 @@
         textView.tag = 100;
         textView.editable = NO;
         [view addSubview:textView];
+//        [view addSubview:[self getImageByContent:content]];
         [self addSubview:view];
         if (i == 0) {
             textView.backgroundColor = [UIColor clearColor];
@@ -141,13 +142,19 @@
         if (currentPage == 0) {
             currentPage ++;
             ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+//            UIImageView *imageView = ((UIImageView *)[nextShowView viewWithTag:100]) ;
+//            imageView = [self getImageByContent:[self getCurrentContentAtIndexPage]];
         } else {
             if (currentPage % 2 == 0) {
                 ((UITextView *)[currentView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+//                UIImageView *imageView = ((UIImageView *)[currentView viewWithTag:100]) ;
+//                imageView = [self getImageByContent:[self getCurrentContentAtIndexPage]];
                 [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
                 [self addSubview:currentView];
             } else {
                 ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+//                UIImageView *imageView = ((UIImageView *)[nextShowView viewWithTag:100]) ;
+//                imageView = [self getImageByContent:[self getCurrentContentAtIndexPage]];
                 [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
                 [self addSubview:nextShowView];
             }
@@ -156,19 +163,27 @@
         if (isCurrentViewFirst) {
             if (currentPage % 2 == 0) {
                 ((UITextView *)[currentView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+//                UIImageView *imageView = ((UIImageView *)[currentView viewWithTag:100]) ;
+//                imageView = [self getImageByContent:[self getCurrentContentAtIndexPage]];
                 [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
                 [self addSubview:currentView];
             } else {
                 ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+//                UIImageView *imageView = ((UIImageView *)[nextShowView viewWithTag:100]) ;
+//                imageView = [self getImageByContent:[self getCurrentContentAtIndexPage]];
                 [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
                 [self addSubview:nextShowView];
             }
         } else {
             if (currentPage % 2 == 0) {
                 ((UITextView *)[nextShowView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
+//                UIImageView *imageView = ((UIImageView *)[nextShowView viewWithTag:100]) ;
+//                imageView = [self getImageByContent:[self getCurrentContentAtIndexPage]];
                 [nextShowView setFrame:CGRectMake(0, 0, CGRectGetWidth(nextShowView.bounds), 0)];
                 [self addSubview:nextShowView];
             } else {
+//                UIImageView *imageView = ((UIImageView *)[currentView viewWithTag:100]) ;
+//                imageView = [self getImageByContent:[self getCurrentContentAtIndexPage]];
                 ((UITextView *)[currentView viewWithTag:100]).text = [self getCurrentContentAtIndexPage];
                 [currentView setFrame:CGRectMake(0, 0, CGRectGetWidth(currentView.bounds), 0)];
                 [self addSubview:currentView];
@@ -209,8 +224,8 @@
         [self invalidateTimer];
     }
     
-    if (currentPage != 0) {
-        if (currentPage %2 == 0) {
+    if (currentIndex == 0) {
+        if (currentPage % 2 == 0) {
             currentView.frame = CGRectMake(0, 0, currentView.bounds.size.width, currentView.bounds.size.height+point.y);
             [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(currentView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
         } else {
@@ -218,9 +233,23 @@
             [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
         }
     } else {
-        nextShowView.frame = CGRectMake(0, 0, nextShowView.bounds.size.width, nextShowView.bounds.size.height+point.y);
-        [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
-        
+        if (isCurrentViewFirst) {
+            if (currentPage %2 == 0) {
+                currentView.frame = CGRectMake(0, 0, currentView.bounds.size.width, currentView.bounds.size.height+point.y);
+                [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(currentView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+            } else {
+                nextShowView.frame = CGRectMake(0, 0, nextShowView.bounds.size.width, nextShowView.bounds.size.height+point.y);
+                [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+            }
+        } else {
+            if (currentPage %2 == 0) {
+                nextShowView.frame = CGRectMake(0, 0, nextShowView.bounds.size.width, nextShowView.bounds.size.height+point.y);
+                [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(nextShowView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+            } else {
+                currentView.frame = CGRectMake(0, 0, currentView.bounds.size.width, currentView.bounds.size.height+point.y);
+                [shadowView setFrame:CGRectMake(0, CGRectGetMaxY(currentView.bounds)-1, CGRectGetWidth(shadowView.bounds), CGRectGetHeight(shadowView.bounds))];
+            }
+        }
     }
     
     if (recognizer.state == UIGestureRecognizerStateEnded) {
@@ -235,6 +264,7 @@
 - (UIImageView *)getImageByContent:(NSString *)content
 {
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), CGRectGetHeight([UIScreen mainScreen].bounds))];
+    imageView.tag = 100;
     imageView.backgroundColor = [UIColor clearColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(imageView.bounds), 0)];
     label.text = content;

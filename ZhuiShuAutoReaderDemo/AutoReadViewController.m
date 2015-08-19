@@ -86,7 +86,7 @@
 - (void)onClickAddContent
 {
     currentIndex ++;
-    [autoReadView reloadAutoReadContent:@"第二章1\n\n\n\n 第二章2\n\n\n 第二章3,第二章4\n\n\n\n 第二章5\n\n\n 第二章6,第二章7\n\n\n\n 第二章8\n\n\n 第二章9,第二章10\n\n\n\n 第二章11\n\n\n 12" index:currentIndex];
+    [autoReadView reloadAutoReadContent:[NSString stringWithFormat:@"第%ld章1\n\n\n\n 第%ld章2\n\n\n 第%ld章3,第%ld章4\n\n\n\n 第%ld5章\n\n\n 第%ld章6,第%ld章7\n\n\n\n 第%ld章8\n\n\n 第%ld章9,第%ld章10\n\n\n\n 第%ld章11\n\n\n 第%ld章12",currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1,currentIndex+1] index:currentIndex];
 }
 
 #pragma mark - BtnAction
