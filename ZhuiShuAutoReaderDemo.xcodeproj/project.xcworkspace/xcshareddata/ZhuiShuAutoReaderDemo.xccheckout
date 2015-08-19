@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>433727E6-87AC-470B-B434-4392D2F5156B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ZhuiShuAutoReaderDemo</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E7A705111C2C24E8BF80C5FEE7B7C4880330B6CB</key>
+		<string>github.com:JCCP3/AutoReaderDemo.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ZhuiShuAutoReaderDemo.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E7A705111C2C24E8BF80C5FEE7B7C4880330B6CB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:JCCP3/AutoReaderDemo.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E7A705111C2C24E8BF80C5FEE7B7C4880330B6CB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E7A705111C2C24E8BF80C5FEE7B7C4880330B6CB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ZhuiShuAutoReaderDemo</string>
+		</dict>
+	</array>
+</dict>
+</plist>

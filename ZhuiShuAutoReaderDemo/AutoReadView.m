@@ -313,6 +313,10 @@
             [self invalidateTimer];
             if ([contentIndexArray count] - 1 > currentIndex) {
                 [self changeCurrentIndex]; //换章
+            } else {
+                //真的结束啦
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"结束" message:@"没有多余章节" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+                [alertView show];
             }
         } else {
             [self invalidateTimer];
