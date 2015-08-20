@@ -36,11 +36,6 @@
     bookContentArray = [@[] mutableCopy];
     viewArray = [NSMutableArray array];
     
-    UIButton *showBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), CGRectGetHeight([UIScreen mainScreen].bounds))];
-    showBtn.backgroundColor = [UIColor blueColor];
-    [showBtn setTitle:@"soga" forState:UIControlStateNormal];
-    [self.view addSubview:showBtn];
-    
     currentIndex = 0;
     autoReadView = [[AutoReadView alloc] initWithFrame:self.view.frame autoReadContent:@"1\n\n\n\n 2\n\n\n 3,4\n\n\n\n 5\n\n\n 6,7\n\n\n\n 8\n\n\n 9,10\n\n\n\n 11\n\n\n 12" index:currentIndex];
     autoReadView.delegate = self;
